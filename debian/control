@@ -1,0 +1,12 @@
+Source: tripoli
+Section: admin
+Priority: optional
+Maintainer: hermanntoast <dev@hermann-toast.de>
+Build-Depends: debhelper (>= 4.0.0), fakeroot
+
+Package: tripoli
+Architecture: all
+Depends: python3
+Homepage: hermann-toast.de
+Recommends:
+Description: Create XFCE Shell extentions

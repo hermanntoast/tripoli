@@ -11,9 +11,10 @@ gi.require_version('AppIndicator3', '0.1')
 
 from gi.repository import Gtk as gtk, AppIndicator3 as appindicator, GLib
 
-logging.basicConfig(format='%(levelname)s: %(asctime)s %(message)s', level=logging.CRITICAL)
+scriptPath = os.path.expanduser("~") + "/.config/tripoli/"
+logPath = os.path.expanduser("~") + "/.config/tripoli/log/"
 
-scriptPath = "~/.config/tripoli/"
+logging.basicConfig(filename=logPath + 'tripoli.log', format='%(levelname)s: %(asctime)s %(message)s', level=logging.INFO)
 
 def __execute(command) -> list:
     commandline = ""
@@ -91,11 +92,12 @@ def main():
 
 if __name__ == "__main__":
     try:
-        print("Start application...")
+        logging.info("Starting application...")
         main()
     except KeyboardInterrupt:
-        print()
         exit()
     except Exception as e:
-        print(e)
+        logging.critical(e)
         pass
+    finally:
+        logging.info("Stopping application...")

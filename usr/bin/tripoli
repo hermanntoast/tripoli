@@ -1,0 +1,58 @@
+#!/bin/bash
+
+function start() {
+    if isRunning; then
+      echo "Tripoli is already running!"
+    else
+      echo -n "Starting tripoli... "
+      python3 /usr/share/tripoli/tripoli.py 2>&1 > /dev/null &
+      echo "[OK]"
+    fi
+}
+
+function stop() {
+    if isRunning; then
+      echo -n "Stopping tripoli... "
+      ps -aux | grep python | grep tripoli | awk '{print $2}' | xargs kill
+      echo "[OK]"
+    else
+      echo "Tripoli is not running!"
+    fi
+}
+
+function isRunning() {
+    if [ $(ps -aux | grep python | grep tripoli | wc -l) -gt 0 ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+function getPID() {
+    return $(ps -aux | grep python | grep tripoli | awk '{print $2}')
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+	  stop
+	;;
+  restart)
+  	stop
+	  sleep 2
+	  start
+    ;;
+  status)
+    if isRunning; then
+      getPID
+      echo "Tripoli is running with pid $?"
+    else
+      echo "Tripoli is not running!"
+    fi
+    ;;
+  *)
+	echo "Option not known! Use start, stop, restart or status!"
+	;;
+esac

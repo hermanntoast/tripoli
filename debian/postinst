@@ -1,0 +1,23 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+    install|configure)
+        echo "Creating directories und copy samples..."
+        mkdir -p ~/.config/tripoli/
+        mkdir -p ~/.config/tripoli/log/
+        cp -f /usr/share/tripoli/samples/sampleScript.sh ~/.config/tripoli/
+        echo "Creating startup script for all users..."
+        echo "#!/bin/sh" > /etc/profile.d/tripoli.sh
+        echo "python3 /usr/share/tripoli/tripoli.py 2>&1 > /dev/null &" >> /etc/profile.d/tripoli.sh
+        chmod +x /etc/profile.d/tripoli.sh
+        ;;
+    upgrade|abort-upgrade)
+        ;;
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 0
+        ;;
+esac
+
+exit 0
